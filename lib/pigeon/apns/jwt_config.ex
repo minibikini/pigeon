@@ -215,7 +215,7 @@ defimpl Pigeon.Configurable, for: Pigeon.APNS.JWTConfig do
 
     signer = Joken.Signer.create("ES256", key, %{"kid" => config.key_identifier})
 
-    IO.inspect({:signer, signer})
+    IO.inspect({:signer, signer, config})
 
     {:ok, token, _claims} =
       default_claims(iss: config.team_id, iat: now)
