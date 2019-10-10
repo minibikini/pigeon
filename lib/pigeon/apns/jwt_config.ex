@@ -215,8 +215,14 @@ defimpl Pigeon.Configurable, for: Pigeon.APNS.JWTConfig do
 
     signer = Joken.Signer.create("ES256", key, %{"kid" => config.key_identifier})
 
+    IO.inspect({:signer, signer})
+
     {:ok, token, _claims} =
       default_claims(iss: config.team_id, iat: now)
+      |> IO.inspect(
+        label: "#{__MODULE__}:#{__ENV__.line} #{DateTime.utc_now()}",
+        limit: :infinity
+      )
       |> Joken.generate_and_sign(nil, signer)
 
     :ok = Pigeon.APNS.Token.update(token_storage_key, {now, token})
